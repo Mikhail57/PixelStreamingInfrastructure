@@ -60,7 +60,7 @@ if (config.UseHTTPS) {
 //If not using authetication then just move on to the next function/middleware
 var isAuthenticated = redirectUrl => function (req, res, next) { return next(); }
 
-if (config.UseAuthentication && config.UseHTTPS) {
+if (config.UseAuthentication) {
 	var passport = require('passport');
 	require('./modules/authentication').init(app);
 	// Replace the isAuthenticated with the one setup on passport module
@@ -201,9 +201,9 @@ if(config.UseAuthentication){
 	var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 	//login page form data is posted here
-	app.post('/login', 
-		urlencodedParser, 
-		passport.authenticate('local', { failureRedirect: '/login' }), 
+	app.post('/login',
+		urlencodedParser,
+		passport.authenticate('local', { failureRedirect: '/login' }),
 		function(req, res){
 			//On success try to redirect to the page that they originally tired to get to, default to '/' if no redirect was found
 			var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/';
@@ -238,7 +238,7 @@ if(config.EnableWebserver) {
 	// Request has been sent to site root, send the homepage file
 	app.get('/', isAuthenticated('/login'), function (req, res) {
 		homepageFile = (typeof config.HomepageFile != 'undefined' && config.HomepageFile != '') ? config.HomepageFile.toString() : defaultConfig.HomepageFile;
-		
+
 		let pathsToTry = [ path.join(__dirname, homepageFile), path.join(__dirname, '/Public', homepageFile), path.join(__dirname, '/custom_html', homepageFile), homepageFile ];
 
 		// Try a few paths, see if any resolve to a homepage file the user has set
@@ -301,12 +301,12 @@ function sendMessageToController(msg, skipSFU, skipStreamer = false) {
 	if (sfu && sfu.readyState == 1 && !skipSFU) {
 		logOutgoing("SFU", msg.type, rawMsg);
 		sfu.send(rawMsg);
-	} 
+	}
 	if (streamer && streamer.readyState == 1 && !skipStreamer) {
 		logOutgoing("Streamer", msg.type, rawMsg);
 		streamer.send(rawMsg);
-	} 
-	
+	}
+
 	if (!sfu && !streamer) {
 		console.error("sendMessageToController: No streamer or SFU connected!\nMSG: %s", rawMsg);
 	}
@@ -353,7 +353,7 @@ streamerServer.on('connection', function (ws, req) {
 		}
 
 		logIncoming("Streamer", msg.type, msgRaw);
-	
+
 		try {
 			// just send pings back to sender
 			if (msg.type == 'ping') {
@@ -400,7 +400,7 @@ streamerServer.on('connection', function (ws, req) {
 		}
 		streamer = null;
 	}
-	
+
 	ws.on('close', function(code, reason) {
 		console.error(`streamer disconnected: ${code} - ${reason}`);
 		onStreamerDisconnected();
@@ -546,7 +546,7 @@ playerServer.on('connection', function (ws, req) {
 			p.ws.send(playerCountMsg);
 		}
 	}
-	
+
 	ws.on('message', (msgRaw) =>{
 
 		var msg;
@@ -563,7 +563,7 @@ playerServer.on('connection', function (ws, req) {
 			console.error(`Cannot parse message ${msgRaw}`);
 			return;
 		}
-		
+
 		logIncoming(`player ${playerId}`, msg.type, msgRaw);
 
 		if (msg.type == 'offer') {
@@ -661,7 +661,7 @@ if (config.UseMatchmaker) {
 	matchmaker.on('connect', function() {
 		console.log(`Cirrus connected to Matchmaker ${matchmakerAddress}:${matchmakerPort}`);
 
-		// message.playerConnected is a new variable sent from the SS to help track whether or not a player 
+		// message.playerConnected is a new variable sent from the SS to help track whether or not a player
 		// is already connected when a 'connect' message is sent (i.e., reconnect). This happens when the MM
 		// and the SS get disconnected unexpectedly (was happening often at scale for some reason).
 		var playerConnected = false;
@@ -694,7 +694,7 @@ if (config.UseMatchmaker) {
 	matchmaker.on('close', (hadError) => {
 		console.logColor(logging.Blue, 'Setting Keep Alive to true');
         matchmaker.setKeepAlive(true, 60000); // Keeps it alive for 60 seconds
-		
+
 		console.log(`Matchmaker connection closed (hadError=${hadError})`);
 
 		reconnect();
@@ -895,7 +895,7 @@ function sendStreamerDisconnectedToMatchmaker() {
 		message = {
 			type: 'streamerDisconnected'
 		};
-		matchmaker.write(JSON.stringify(message));	
+		matchmaker.write(JSON.stringify(message));
 	} catch (err) {
 		console.logColor(logging.Red, `ERROR sending streamerDisconnected: ${err.message}`);
 	}

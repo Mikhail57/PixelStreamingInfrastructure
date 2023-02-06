@@ -1,5 +1,5 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
-// Adapted from 
+// Adapted from
 // * https://blog.risingstack.com/node-hero-node-js-authentication-passport-js/
 // * https://github.com/RisingStack/nodehero-authentication/tree/master/app
 // * https://github.com/passport/express-4.x-local-example
@@ -44,15 +44,17 @@ function initPassport (app) {
 			//maxAge: 5 * 1000 /* 5 seconds */
 		}
 	}));
-	
+
 	app.use(passport.initialize());
 	app.use(passport.session());
-	
+
 	passport.serializeUser(function(user, cb) {
+		console.log("Serialize user: " + JSON.stringify(user));
 	 	cb(null, user.id);
 	});
 
 	passport.deserializeUser(function(id, cb) {
+		console.log("Deserialize user: " + id);
 	 	db.users.findById(id, function (err, user) {
 			if (err) { return cb(err); }
 			cb(null, user);
@@ -60,14 +62,14 @@ function initPassport (app) {
 	});
 
 	console.log('Setting up auth');
-	passport.use(new LocalStrategy(
+	passport.use(new LocalStrategy({},
 		(username, password, callback) => {
 			db.users.findByUsername(username, (err, user) => {
 				if (err) {
 					console.log(`Unable to login '${username}', error ${err}`);
 					return callback(err);
 				}
-			
+
 				// User not found
 				if (!user) {
 					console.log(`User '${username}' not found`);
@@ -91,9 +93,12 @@ function initPassport (app) {
 			})
 		}
 	));
-	
+
 	passport.authenticationMiddleware = function authenticationMiddleware (redirectUrl) {
 		return function (req, res, next) {
+			console.log("Is authenticated: " + req.isAuthenticated());
+			console.log("Is authenticated: " + JSON.stringify(req.headers));
+			// console.log(JSON.stringify(req));
 		    if (req.isAuthenticated()) {
 		      return next();
 		    }

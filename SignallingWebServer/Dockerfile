@@ -1,12 +1,14 @@
 # Use the current Long Term Support (LTS) version of Node.js
 FROM node:lts
 
-# Copy the signalling server source code from the build context
-COPY . /opt/SignallingWebServer
+WORKDIR /opt/SignallingWebServer
 
 # Install the dependencies for the signalling server
-WORKDIR /opt/SignallingWebServer
+COPY package.json /opt/SignallingWebServer/
 RUN npm install .
+
+# Copy the signalling server source code from the build context
+COPY . /opt/SignallingWebServer
 
 # Expose TCP ports 80 and 443 for player WebSocket connections and web server HTTP(S) access
 EXPOSE 80
