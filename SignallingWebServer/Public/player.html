@@ -43,13 +43,13 @@
 					<object data="images/Settings.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Settings</span>
 				</button>
-				<button class="tooltip" id="statsBtn">
+				<button class="tooltip" id="statsBtn" style="display: none">
 					<object data="images/Info.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Information</span>
 				</button>
-				
+
 			</div>
-			<div id="unrealengine">
+			<div id="unrealengine" style="display: none">
 				<p></p>
 				<svg viewBox="0 0 1204.105 74.011" xmlns="http://www.w3.org/2000/svg">
 					<g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#ffffff" stroke-width="0.25mm" fill="#ffffff" style="stroke:#ffffff;stroke-width:0.25mm;fill:#ffffff">
@@ -57,7 +57,7 @@
 					</g>
 				</svg>
 			</div>
-			<div id="connection" class="tooltip">
+			<div id="connection" class="tooltip" style="display: none">
 				<svg version="1.1" id="connectionStrength" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 				viewBox="0 0 494.45 494.45" style="enable-background:new 0 0 494.45 494.45;" xml:space="preserve">
 					<circle id="dot" cx="247.125" cy="398.925" r="35.3"/>
@@ -73,9 +73,9 @@
 						c-10.3,10.3-27.1,10.3-37.4,0c-10.3-10.3-10.3-27.1,0-37.4c25.4-25.4,59.2-39.4,95.2-39.4s69.8,14,95.2,39.5
 						c10.3,10.3,10.3,27.1,0,37.4C337.225,346.225,330.425,348.825,323.625,348.825z"/>
 
-					
 
-					
+
+
 				</svg>
 				<span class="tooltiptext" id="qualityText">Not connected</span>
 			</div>
@@ -158,19 +158,19 @@
 									<div class="tgl-slider"></div>
 								</label>
 							</label>
-						</div>	
+						</div>
 						<div id="showFPS" class="setting">
 							<div class="settings-text">Show FPS</div>
 							<label class="btn-overlay">
 								<input type="button" id="show-fps-button" class="overlay-button btn-flat" value="Toggle">
 							</label>
-						</div>	
+						</div>
 						<div id="keyframeRequest" class="setting">
 							<div class="settings-text">Request KeyFrame</div>
 							<label class="btn-overlay">
 								<input type="button" id="request-keyframe-button" class="overlay-button btn-flat" value="Request">
 							</label>
-						</div>	
+						</div>
 						<section id="encoderSettings">
 							<div id="encoderSettingsHeader" class="settings-text">
 								<div>Encoder Settings</div>
@@ -189,7 +189,7 @@
 								</div>
 							</div>
 						</section>
-		
+
 						<section id="webRTCSettings">
 							<div id="webRTCSettingsHeader" class="settings-text">
 								<div>WebRTC Settings</div>
@@ -211,7 +211,7 @@
 								</div>
 							</div>
 						</section>
-		
+
 						<section id="streamSettings">
 							<div id="streamSettingsHeader" class="settings-text">
 								<div>Stream Settings</div>
@@ -238,7 +238,7 @@
 									</label>
 								</div>
 							</div>
-						</section>		
+						</section>
 					</div>
 				</div>
 			</div>
@@ -246,7 +246,7 @@
 				<div class="panel">
 					<div id="heading">Information</div>
 					<div id="close" onclick="statsClicked()"></div>
-					<div id="content">		
+					<div id="content">
 						<section id="statsPanel">
 							<div class="setting settings-text">
 								<div>Session Stats</div>
