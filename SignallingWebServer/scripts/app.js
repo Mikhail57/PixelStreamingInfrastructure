@@ -679,9 +679,9 @@ function fullscreen() {
 }
 
 function onFullscreenChange() {
-	isFullscreen = (document.webkitIsFullScreen 
-		|| document.mozFullScreen 
-		|| (document.msFullscreenElement && document.msFullscreenElement !== null) 
+	isFullscreen = (document.webkitIsFullScreen
+		|| document.mozFullScreen
+		|| (document.msFullscreenElement && document.msFullscreenElement !== null)
 		|| (document.fullscreenElement && document.fullscreenElement !== null));
 
 	let minimize = document.getElementById('minimize');
@@ -1228,7 +1228,7 @@ function processFileContents(view) {
         // File reconstruction
         /**
          * Example code to reconstruct the file
-         * 
+         *
          * This code reconstructs the received data into the original file based on the mime type and extension provided and then downloads the reconstructed file
          */
         var received = new Blob(file.data, { type: file.mimetype });
@@ -1698,7 +1698,7 @@ function invalidateFreezeFrameOverlay() {
         freezeFrame.valid = false;
         freezeFrameOverlay.classList.remove("freezeframeBackground");
     }, freezeFrameDelay);
-    
+
     if (webRtcPlayerObj) {
         webRtcPlayerObj.setVideoEnabled(true);
     }
@@ -1805,7 +1805,7 @@ function updateVideoStreamSize() {
             return;
 
         let descriptor = {
-            "Resolution.Width": playerElement.clientWidth, 
+            "Resolution.Width": playerElement.clientWidth,
             "Resolution.Height": playerElement.clientHeight
         };
         emitCommand(descriptor);
@@ -2326,7 +2326,7 @@ function registerTouchEvents(playerElement) {
                 console.log(`F${fingerIds[touch.identifier]}=(${x}, ${y})`);
             }
             let coord = normalizeAndQuantizeUnsigned(x, y);
-            
+
             switch(type) {
                 case "TouchStart":
                     toStreamerHandlers.TouchStart("TouchStart", [numTouches, coord.x, coord.y, fingerIds[touch.identifier], MaxByteValue * touch.force, coord.inRange ? 1 : 0]);
@@ -2451,8 +2451,8 @@ const SpecialKeyCodes = {
     RightAlt: 255
 };
 
-/* 
-* New browser APIs have moved away from KeyboarddEvent.keyCode to KeyboardEvent.Code. 
+/*
+* New browser APIs have moved away from KeyboarddEvent.keyCode to KeyboardEvent.Code.
 * For details see: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode#constants_for_keycode_value
 * We still use old KeyboardEvent.keyCode integers in the UE C++ side, so we need a way to map the new
 * string-based KeyboardEvenet.Code to the old integers.
@@ -2779,7 +2779,7 @@ function connect() {
             {
                 showTextOverlay(`DISCONNECTED`);
             }
-            
+
 
             let reclickToStart = setTimeout(function(){
                 start(true)
@@ -2829,7 +2829,7 @@ function clearMouseEvents(playerElement) {
 
 function toggleControlScheme() {
     let schemeToggle = document.getElementById("control-scheme-text");
-    
+
     switch (inputOptions.controlScheme) {
         case ControlSchemeType.HoveringMouse:
             inputOptions.controlScheme = ControlSchemeType.LockedMouse;
@@ -2907,6 +2907,25 @@ function closeStream() {
     }
 }
 
+function handleCustomEvents(data) {
+    console.log('Received custom event data ' + data)
+    let newScheme = null;
+    switch (data) {
+        case "PointerLocked":
+            newScheme = ControlSchemeType.LockedMouse;
+            break;
+        case "PointerUnlocked":
+            document.exitPointerLock();
+            newScheme = ControlSchemeType.HoveringMouse;
+            break;
+    }
+    if(webRtcPlayerObj && webRtcPlayerObj.video && newScheme != null) {
+        inputOptions.controlScheme = newScheme;
+        registerMouse(webRtcPlayerObj.video);
+        console.log(`Updating control scheme to: ${inputOptions.controlScheme ? "Hovering Mouse" : "Locked Mouse"}`)
+    }
+}
+
 function load() {
     parseURLParams();
     setupHtmlEvents();
@@ -2916,5 +2935,6 @@ function load() {
     registerKeyboardEvents();
     // Example response event listener that logs to console
     addResponseEventListener('logListener', (response) => {console.log(`Received response message from streamer: "${response}"`)})
+    addResponseEventListener('handle_responses', handleCustomEvents)
     start(false);
 }
