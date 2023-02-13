@@ -8,6 +8,8 @@ build_release_image:
   stage: build_release_image
   only:
     - master
+  tags:
+    - SKV-R2
   environment: Staging
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
