@@ -1,5 +1,5 @@
 # Use the current Long Term Support (LTS) version of Node.js
-FROM library/node:lts
+FROM docker.smart.mos.ru/library/node:lts
 
 WORKDIR /opt/SignallingWebServer
 
