@@ -1,0 +1,19 @@
+stages:
+  - build_release_image
+
+build_release_image:
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  stage: build_release_image
+  only:
+    - master
+  tags:
+    - back
+  dependencies:
+    - build
+  environment: Staging
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
+

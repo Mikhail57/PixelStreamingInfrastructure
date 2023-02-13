@@ -1,5 +1,5 @@
 # Use the current Long Term Support (LTS) version of Node.js
-FROM node:lts
+FROM library/node:lts
 
 WORKDIR /opt/SignallingWebServer
 
