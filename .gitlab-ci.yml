@@ -3,7 +3,7 @@ stages:
 
 build_release_image:
   image:
-    name: https://repo-mirror.mos.ru/kaniko-project/executor:debug
+    name: repo-mirror.mos.ru/kaniko-project/executor:debug
     entrypoint: [""]
   stage: build_release_image
   only:
