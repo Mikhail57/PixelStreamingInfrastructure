@@ -1,9 +1,13 @@
+variables:
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build:$CI_PIPELINE_ID
+  CONTAINER_LATEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build
+
 stages:
   - build_release_image
 
 build_release_image:
   image:
-    name: repo-mirror.mos.ru/kaniko-project/executor:debug
+    name: docker.smart.mos.ru/library/kaniko/kaniko:debug
     entrypoint: [""]
   stage: build_release_image
   only:
