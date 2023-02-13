@@ -7,7 +7,7 @@ stages:
 
 build_release_image:
   image:
-    name: docker.smart.mos.ru/library/kaniko/kaniko:debug
+    name: docker.smart.mos.ru/library/kaniko/kaniko:1.8.1-debug
     entrypoint: [""]
   stage: build_release_image
   only:
