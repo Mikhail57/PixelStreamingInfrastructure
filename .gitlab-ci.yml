@@ -3,7 +3,7 @@ stages:
 
 build_release_image:
   image:
-    name: gcr.io/kaniko-project/executor:debug
+    name: kaniko-project/executor:debug
     entrypoint: [""]
   stage: build_release_image
   only:
