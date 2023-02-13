@@ -3,7 +3,7 @@ stages:
 
 build_release_image:
   image:
-    name: kaniko-project/executor:debug
+    name: repo-mirror.mos.ru/repository/docker-gcr.io/v2/kaniko-project/executor/manifests/debug
     entrypoint: [""]
   stage: build_release_image
   only:
