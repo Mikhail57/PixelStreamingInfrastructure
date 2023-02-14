@@ -1,5 +1,5 @@
 # Use the current Long Term Support (LTS) version of Node.js
-FROM repo-mirror.mos.ru/repository/docker-hub/v2/library/node/manifests/lts
+FROM smart.mos.ru/nexuscdp/repository/library/node:lts
 
 WORKDIR /opt/SignallingWebServer
 
