@@ -5,6 +5,9 @@ WORKDIR /opt/SignallingWebServer
 
 # Install the dependencies for the signalling server
 COPY package.json /opt/SignallingWebServer/
+
+RUN npm config set registry https://repo-mirror.mos.ru/repository/npm-public
+
 RUN npm install .
 
 # Copy the signalling server source code from the build context
