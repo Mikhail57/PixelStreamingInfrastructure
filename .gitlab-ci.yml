@@ -30,6 +30,7 @@ deploy-job:      # This job runs in the deploy stage.
   script:
   #  - echo $KUBECONFIG > ~/.kube/config
     - echo $KUBECONFIGR | base64 -d > kubeconfig
+    - cat $PWD/kubeconfig
     - KUBECONFIG=$PWD/kubeconfig
     - echo "Deploying application..."
 #    - kubectl apply -f manifest.yaml
