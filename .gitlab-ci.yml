@@ -21,7 +21,7 @@ build_release_image:
     - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
 
 deploy-job:      # This job runs in the deploy stage.
-  image: dockerhub.mos.ru/library/alpine/helm
+  image: dockerhub.mos.ru/alpine/helm
   tags:
     - SKV-R2
   only:
