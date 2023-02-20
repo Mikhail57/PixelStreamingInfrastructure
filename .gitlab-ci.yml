@@ -31,7 +31,7 @@ deploy-job:      # This job runs in the deploy stage.
   #  - echo $KUBECONFIG > ~/.kube/config
     - echo $KUBECONFIGR | base64 -d > kubeconfig
     - cat $PWD/kubeconfig
-    - KUBECONFIG=$PWD/kubeconfig
+    - export KUBECONFIG=$PWD/kubeconfig
     - curl https://rancher.mos.ru/k8s/clusters/c-nrpd4 | jq -r
     - echo "Deploying application..."
 #    - kubectl apply -f manifest.yaml
