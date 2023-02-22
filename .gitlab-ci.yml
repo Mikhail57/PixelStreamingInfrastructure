@@ -29,9 +29,9 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   script:
   #  - echo $KUBECONFIG > ~/.kube/config
-#    - echo $KUBECONFIGR | base64 -d > kubeconfig
-#    - cat $PWD/kubeconfig
-#    - export KUBECONFIG=$PWD/kubeconfig
-#    - echo "Deploying application..."
+    - echo $KUBECONFIGR | base64 -d > kubeconfig
+    - cat $PWD/kubeconfig
+    - export KUBECONFIG=$PWD/kubeconfig
+    - echo "Deploying application..."
 #    - kubectl apply -f manifest.yaml
     - helm upgrade -n testgpu -i pixel ./helm --set image.tag=$CI_PIPELINE_ID --set imageCredentials.registry=$CI_REGISTRY --set imageCredentials.username=$CI_REGISTRY_USER --set imageCredentials.password=$CI_REGISTRY_PASSWORD --create-namespace
