@@ -1,0 +1,38 @@
+variables:
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build:$CI_PIPELINE_ID
+  CONTAINER_LATEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build
+
+stages:
+  - build_release_image
+  - deploy
+
+build_release_image:
+  image:
+    name: docker.smart.mos.ru/library/kaniko/kaniko:1.8.1-debug
+    entrypoint: [""]
+  stage: build_release_image
+  only:
+    - master
+  tags:
+    - SKV-R2
+  environment: Staging
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
+
+deploy-job:      # This job runs in the deploy stage.
+  image: dockerhub.mos.ru/dtzar/helm-kubectl
+  tags:
+    - SKV-R2
+  only:
+    - master
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  script:
+  #  - echo $KUBECONFIG > ~/.kube/config
+#    - echo $KUBECONFIGR | base64 -d > kubeconfig
+#    - cat $PWD/kubeconfig
+#    - export KUBECONFIG=$PWD/kubeconfig
+#    - echo "Deploying application..."
+#    - kubectl apply -f manifest.yaml
+    - kubectl config use-context urban-planning/metapolis/pixelstreaminginfrastructure:pixel
+    - helm install -n app pixel ./pixelstreaming --set image.tag=$CI_PIPELINE_ID --set imageCredentials.registry=$CI_REGISTRY --set imageCredentials.username=$CI_REGISTRY_USER --set imageCredentials.password=$CI_REGISTRY_PASSWORD --create-namespace
