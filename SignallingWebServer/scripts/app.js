@@ -114,6 +114,8 @@ freezeFrameDelay = 50; // ms
 
 let activeKeys = [];
 
+let listenersToRemove = {};
+
 let toStreamerMessages = new TwoWayMap();
 let fromStreamerMessages = new TwoWayMap();
 
@@ -2172,11 +2174,15 @@ function registerLockedMouseEvents(playerElement) {
     document.addEventListener('pointerlockchange', lockStateChange, false);
     document.addEventListener('mozpointerlockchange', lockStateChange, false);
 
+    listenersToRemove['pointerlockchange'] = lockStateChange;
+    listenersToRemove['mozpointerlockchange'] = lockStateChange;
+
     function lockStateChange() {
         if (document.pointerLockElement === playerElement ||
             document.mozPointerLockElement === playerElement) {
             console.log('Pointer locked');
             document.addEventListener("mousemove", updatePosition, false);
+            listenersToRemove['mousemove'] = updatePosition;
         } else {
             console.log('The pointer lock status is now unlocked');
             document.removeEventListener("mousemove", updatePosition, false);
@@ -2916,6 +2922,10 @@ function handleCustomEvents(data) {
             break;
         case "PointerUnlocked":
             document.exitPointerLock();
+            for (const [key, value] of Object.entries(listenersToRemove)) {
+                document.removeEventListener(key, value, false)
+            }
+
             newScheme = ControlSchemeType.HoveringMouse;
             break;
     }
