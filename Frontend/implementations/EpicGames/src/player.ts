@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import { Config, PixelStreaming } from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+import {Config, Flags, PixelStreaming} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
 import { Application, PixelStreamingApplicationStyle } from '@epicgames-ps/lib-pixelstreamingfrontend-ui-ue5.2';
 const PixelStreamingApplicationStyles =
     new PixelStreamingApplicationStyle();
@@ -18,6 +18,18 @@ document.body.onload = function() {
 	const application = new Application({
 		stream,
 		onColorModeChanged: (isLightMode) => PixelStreamingApplicationStyles.setColorMode(isLightMode)
+	});
+	stream.addResponseEventListener('PointerLocked', () => {
+		stream.config.setFlagEnabled(
+			Flags.HoveringMouseMode,
+			false
+		);
+	});
+	stream.addResponseEventListener('PointerUnlocked', () => {
+		stream.config.setFlagEnabled(
+			Flags.HoveringMouseMode,
+			true
+		);
 	});
 	// document.getElementById("centrebox").appendChild(application.rootElement);
 	document.body.appendChild(application.rootElement);
