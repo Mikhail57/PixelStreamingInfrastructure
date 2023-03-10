@@ -98,7 +98,7 @@ export class AggregatedStats {
                     break;
                 default:
                     Logger.Error(Logger.GetStackTrace(), 'unhandled Stat Type');
-                    Logger.Log(Logger.GetStackTrace(), stat);
+                    Logger.Log(Logger.GetStackTrace(), JSON.stringify(stat));
                     break;
             }
         });

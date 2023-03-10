@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-import {Config, Flags, PixelStreaming} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
+import {Config, Flags, Logger, PixelStreaming} from '@epicgames-ps/lib-pixelstreamingfrontend-ue5.2';
 import { Application, PixelStreamingApplicationStyle } from '@epicgames-ps/lib-pixelstreamingfrontend-ui-ue5.2';
 const PixelStreamingApplicationStyles =
     new PixelStreamingApplicationStyle();
@@ -8,7 +8,7 @@ PixelStreamingApplicationStyles.applyStyleSheet();
 
 document.body.onload = function() {
 	// Example of how to set the logger level
-	// Logger.SetLoggerVerbosity(10);
+	Logger.SetLoggerVerbosity(6);
 
 	// Create a config object
 	const config = new Config({ useUrlParams: true });
