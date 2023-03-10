@@ -19,13 +19,15 @@ document.body.onload = function() {
 		stream,
 		onColorModeChanged: (isLightMode) => PixelStreamingApplicationStyles.setColorMode(isLightMode)
 	});
-	stream.addResponseEventListener('PointerLocked', () => {
+	stream.addResponseEventListener('PointerLocked', (response) => {
+		Logger.Log(Logger.GetStackTrace(), `PointerLocker. Got response: ${response}`)
 		stream.config.setFlagEnabled(
 			Flags.HoveringMouseMode,
 			false
 		);
 	});
-	stream.addResponseEventListener('PointerUnlocked', () => {
+	stream.addResponseEventListener('PointerUnlocked', (response) => {
+		Logger.Log(Logger.GetStackTrace(), `PointerUnlocker. Got response: ${response}`)
 		stream.config.setFlagEnabled(
 			Flags.HoveringMouseMode,
 			true
