@@ -8,7 +8,7 @@ PixelStreamingApplicationStyles.applyStyleSheet();
 
 document.body.onload = function() {
 	// Example of how to set the logger level
-	Logger.SetLoggerVerbosity(6);
+	// Logger.SetLoggerVerbosity(6);
 
 	// Create a config object
 	const config = new Config({ useUrlParams: true });
