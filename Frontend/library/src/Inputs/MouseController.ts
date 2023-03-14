@@ -61,6 +61,7 @@ export class MouseController {
             mouseController,
             this.activeKeysProvider
         );
+        videoElementParent.style.cursor = 'none';
 
         videoElementParent.requestPointerLock =
             videoElementParent.requestPointerLock ||
@@ -153,6 +154,7 @@ export class MouseController {
         const videoElementParent =
             this.videoElementProvider.getVideoParentElement() as HTMLDivElement;
         const hoveringMouseEvents = new HoveringMouseEvents(mouseController);
+        videoElementParent.style.cursor = 'default'
 
         const onmousemove = (mouseEvent: MouseEvent) =>
             hoveringMouseEvents.updateMouseMovePosition(mouseEvent);
