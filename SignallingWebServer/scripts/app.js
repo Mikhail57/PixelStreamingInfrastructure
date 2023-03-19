@@ -2795,6 +2795,7 @@ function connect() {
 
         ws = undefined;
     };
+    setupStartupResolution();
 }
 
 // Config data received from WebRTC sender via the Cirrus web server
