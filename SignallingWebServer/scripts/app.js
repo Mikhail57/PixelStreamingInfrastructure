@@ -2700,6 +2700,7 @@ function start(isReconnection) {
     } else {
         connect();
     }
+    setupStartupResolution();
 }
 
 function connect() {
@@ -2934,6 +2935,14 @@ function handleCustomEvents(data) {
         registerMouse(webRtcPlayerObj.video);
         console.log(`Updating control scheme to: ${inputOptions.controlScheme ? "Hovering Mouse" : "Locked Mouse"}`)
     }
+}
+
+function setupStartupResolution() {
+    let descriptor = {
+        "Resolution.Width": 1920,
+        "Resolution.Height": 1080
+    };
+    emitCommand(descriptor);
 }
 
 function load() {
