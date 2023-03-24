@@ -2685,7 +2685,9 @@ function statsClicked( /* e */ ) {
 
 function searchClicked() {
     emitUIInteraction('OnSearchClick');
-    toggleSearchButtonVisibility(false);
+    if (webRtcPlayerObj && webRtcPlayerObj.video) {
+        toggleSearchButtonVisibility(false);
+    }
 }
 
 function toggleSearchButtonVisibility(isVisible) {
