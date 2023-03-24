@@ -757,6 +757,9 @@ function setupHtmlEvents() {
     let statsBtn = document.getElementById('statsBtn');
     statsBtn.addEventListener('click', statsClicked);
 
+    let searchBtn = document.getElementById('searchBtn');
+    searchBtn.addEventListener('click', searchClicked)
+
     let controlBtn = document.getElementById('control-tgl');
     controlBtn.addEventListener('change', toggleControlScheme);
 
@@ -2656,7 +2659,10 @@ function settingsClicked( /* e */ ) {
 
     if(stats.classList.contains("panel-wrap-visible"))
     {
+        emitUIInteraction('OnSettingClose');
         stats.classList.toggle("panel-wrap-visible");
+    } else {
+        emitUIInteraction('OnSettingOpen');
     }
 
     settings.classList.toggle("panel-wrap-visible");
@@ -2677,6 +2683,15 @@ function statsClicked( /* e */ ) {
     stats.classList.toggle("panel-wrap-visible");
 }
 
+function searchClicked() {
+    emitUIInteraction('OnSearchClick');
+    toggleSearchButtonVisibility(false);
+}
+
+function toggleSearchButtonVisibility(isVisible) {
+    let searchBtn = document.getElementById('searchBtn');
+    searchBtn.style.display = (isVisible) ? '' : 'none';
+}
 
 
 function start(isReconnection) {
@@ -2929,6 +2944,9 @@ function handleCustomEvents(data) {
             }
 
             newScheme = ControlSchemeType.HoveringMouse;
+            break;
+        case 'OnFindWidgetClose':
+            toggleSearchButtonVisibility(true);
             break;
     }
     if(webRtcPlayerObj && webRtcPlayerObj.video && newScheme != null) {
