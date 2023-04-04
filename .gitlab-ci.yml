@@ -1,6 +1,7 @@
 variables:
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build:$CI_PIPELINE_ID
   CONTAINER_LATEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/$CI_COMMIT_REF_SLUG/build
+  METAPOLIS_IMAGE: ${}
 
 stages:
   - build_release_image
@@ -8,31 +9,35 @@ stages:
 
 build_release_image:
   image:
-    name: docker.smart.mos.ru/library/kaniko/kaniko:1.8.1-debug
-    entrypoint: [""]
+    name: gcr.io/kaniko-project/executor:v1.7.0-debug
+    entrypoint: [ "" ]
   stage: build_release_image
-  only:
-    - master
   tags:
-    - SKV-R2
+    - docker
   environment: Staging
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
+    - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile-meta --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
 
-deploy-job:      # This job runs in the deploy stage.
-  image: dockerhub.mos.ru/dtzar/helm-kubectl
+
+
+deploy:
+  stage: deploy
+  image: ubuntu:latest
   tags:
-    - SKV-R2
-  only:
-    - master
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+    - docker
+  before_script:
+    - apt update && apt install -y gettext-base
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
   script:
-  #  - echo $KUBECONFIG > ~/.kube/config
-#    - echo $KUBECONFIGR | base64 -d > kubeconfig
-#    - cat $PWD/kubeconfig
-#    - export KUBECONFIG=$PWD/kubeconfig
-#    - echo "Deploying application..."
-#    - kubectl apply -f manifest.yaml
-    - kubectl config use-context urban-planning/metapolis/pixelstreaminginfrastructure:pixel
-    - helm install -n app pixel ./pixelstreaming --set image.tag=$CI_PIPELINE_ID --set imageCredentials.registry=$CI_REGISTRY --set imageCredentials.username=$CI_REGISTRY_USER --set imageCredentials.password=$CI_REGISTRY_PASSWORD --create-namespace
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - envsubst < .env.template > .env
+    - echo "SIGNALING_IMAGE=$CONTAINER_RELEASE_IMAGE" >> .env
+    - echo "METAPOLIS_IMAGE=$METAPOLIS_IMAGE" >> .env
+    - scp -o StrictHostKeyChecking=no -r docker-compose-meta.yaml .env $SERVER_USER@$SERVER_IP:~/stage_metapolis_su
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage_metapolis_su/docker-compose-meta.yaml pull"
+  when: manual
