@@ -15,5 +15,6 @@
   "HttpsPort": 443,
   "StreamerPort": 8888,
   "SFUPort": 8889,
-  "MaxPlayerCount": -1
+  "MaxPlayerCount": -1,
+  "peerConnectionOptions": "{\"iceServers\":[{\"urls\":[\"turn:metapolis.su:3478\"],\"username\":\"TurnUser\",\"credential\":\"TurnPswrd111\"}]}"
 }
