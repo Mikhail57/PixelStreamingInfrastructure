@@ -5,7 +5,7 @@ services:
     image: ${SIGNALING_IMAGE}
     restart: unless-stopped
     ports:
-      - "$PORT:80"
+      - ${PORT}:80
 
   metapolis:
     image: ${METAPOLIS_IMAGE}
