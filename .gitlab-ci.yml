@@ -26,6 +26,42 @@ build_release_image:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile-meta --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
 
+build_release_image_stage2:
+  image:
+    name: gcr.io/kaniko-project/executor:v1.7.0-debug
+    entrypoint: [ "" ]
+  stage: build_release_image
+  tags:
+    - docker
+  environment: Staging
+  script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR/SignallingWebServer/ --dockerfile $CI_PROJECT_DIR/SignallingWebServer/Dockerfile-meta --destination $CONTAINER_RELEASE_IMAGE --destination $CONTAINER_LATEST_IMAGE
+
+deploy-stage2:
+  stage: deploy
+  image: ubuntu:latest
+  tags:
+    - docker
+  variables:
+    PORT: 8002
+  before_script:
+    - apt update && apt install -y gettext-base
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+  script:
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - envsubst < .env.template > .env
+    - echo "SIGNALING_IMAGE=$CONTAINER_RELEASE_IMAGE" >> .env
+    - echo "METAPOLIS_IMAGE=gitlab.theinvaders.pro:5050/digital_twin/digital_twin_moscow_unreal/develop/build:latest" >> .env
+    - echo "PORT=$PORT" >> .env
+    - scp -o StrictHostKeyChecking=no -r docker-compose-meta.yaml .env $SERVER_USER@$SERVER_IP:~/stage2_metapolis_su
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage2_metapolis_su/docker-compose-meta.yaml pull"
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage2_metapolis_su/docker-compose-meta.yaml up -d"
+
 deploy-stage:
   stage: deploy
   image: ubuntu:latest
