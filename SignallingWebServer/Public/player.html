@@ -34,19 +34,19 @@
 		<div id="player"></div>
 		<div id="overlay">
 			<div id="controls">
-				<!--<button class="tooltip" onclick="fullscreen()" id="fullscreen-btn">
+				<button class="tooltip" onclick="fullscreen()" id="fullscreen-btn" style="display: none">
 					<object data="images/Minimize.svg" type="image/svg+xml" id="minimize"></object>
 					<object data="images/Maximize.svg" type="image/svg+xml" id="maximize"></object>
 					<span class="tooltiptext">Fullscreen</span>
 				</button>
-				<button class="tooltip" id="settingsBtn">
+				<button class="tooltip" id="settingsBtn" style="display: none">
 					<object data="images/Settings.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Settings</span>
 				</button>
-				<button class="tooltip" id="statsBtn" style="">
+				<button class="tooltip" id="statsBtn" style="display: none">
 					<object data="images/Info.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Information</span>
-				</button>-->
+				</button>
 				<button class="tooltip" id="searchBtn">
 					<object data="images/Search.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Поиск</span>
@@ -105,7 +105,7 @@
 						<div id="matchViewportResolution" class="setting">
 							<div class="settings-text">Match viewport resolution</div>
 							<label class="tgl-switch">
-								<input type="checkbox" id="match-viewport-res-tgl" class="tgl tgl-flat">
+								<input type="checkbox" id="match-viewport-res-tgl" class="tgl tgl-flat" checked>
 								<div class="tgl-slider"></div>
 							</label>
 						</div>
