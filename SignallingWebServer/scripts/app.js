@@ -1304,6 +1304,10 @@ function setupWebRtcPlayer(htmlElement, config) {
     htmlElement.appendChild(webRtcPlayerObj.audio);
     htmlElement.appendChild(freezeFrameOverlay);
 
+    webRtcPlayerObj.onDataChannelConnected = function() {
+        updateVideoStreamSize();
+    }
+
     webRtcPlayerObj.onWebRtcOffer = function(offer) {
         if (ws && ws.readyState === WS_OPEN_STATE) {
             let offerStr = JSON.stringify(offer);
