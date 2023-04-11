@@ -50,7 +50,7 @@ let inputController = null;
 let autoPlayAudio = true;
 let qualityController = false;
 let qualityControlOwnershipCheckBox;
-let matchViewportResolution;
+let matchViewportResolution = true;
 let VideoEncoderQP = "N/A";
 // TODO: Remove this - workaround because of bug causing UE to crash when switching resolutions too quickly
 let lastTimeResized = new Date().getTime();
