@@ -34,6 +34,7 @@ build_release_image_stage2:
   rules:
     - if: $CI_PIPELINE_TRIGGERED
       when: newer
+    - when: always
   tags:
     - docker
   environment: Staging
@@ -49,6 +50,7 @@ deploy-stage2:
   rules:
     - if: $CI_PIPELINE_TRIGGERED
       when: newer
+    - when: always
   tags:
     - docker
   variables:
