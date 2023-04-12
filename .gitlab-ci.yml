@@ -71,6 +71,8 @@ deploy-stage2:
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage2_metapolis_su/docker-compose-meta.yaml pull"
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage2_metapolis_su/docker-compose-meta.yaml up -d"
+    - sleep 600
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker compose  -f ~/stage2_metapolis_su/docker-compose-meta.yaml down"
 
 deploy-stage:
   stage: deploy
