@@ -2662,10 +2662,12 @@ function settingsClicked( /* e */ ) {
     let stats = document.getElementById('stats-panel');
     let settingsBtn = document.getElementById('settingsBtn');
 
-    if(stats.classList.contains("panel-wrap-visible"))
-    {
-        emitUIInteraction('OnSettingClose');
+    if(stats.classList.contains("panel-wrap-visible")) {
         stats.classList.toggle("panel-wrap-visible");
+    }
+
+    if (settings.classList.contains("panel-wrap-visible")) {
+        emitUIInteraction('OnSettingClose');
         settingsBtn.style.display = '';
     } else {
         emitUIInteraction('OnSettingOpen');
