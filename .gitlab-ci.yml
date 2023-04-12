@@ -31,6 +31,9 @@ build_release_image_stage2:
     name: gcr.io/kaniko-project/executor:v1.7.0-debug
     entrypoint: [ "" ]
   stage: build_release_image
+  rules:
+    - if: $CI_PIPELINE_TRIGGERED
+      when: newer
   tags:
     - docker
   environment: Staging
@@ -41,6 +44,11 @@ build_release_image_stage2:
 deploy-stage2:
   stage: deploy
   image: ubuntu:latest
+  needs: 
+    - build_release_image
+  rules:
+    - if: $CI_PIPELINE_TRIGGERED
+      when: newer
   tags:
     - docker
   variables:
