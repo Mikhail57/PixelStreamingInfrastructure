@@ -46,7 +46,7 @@ deploy-stage2:
   stage: deploy
   image: ubuntu:latest
   needs: 
-    - build_release_image
+    - build_release_image_stage2
   rules:
     - if: $CI_PIPELINE_TRIGGERED
       when: never
