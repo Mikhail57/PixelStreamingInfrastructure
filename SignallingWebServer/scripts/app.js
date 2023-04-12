@@ -50,7 +50,7 @@ let inputController = null;
 let autoPlayAudio = true;
 let qualityController = false;
 let qualityControlOwnershipCheckBox;
-let matchViewportResolution;
+let matchViewportResolution = true;
 let VideoEncoderQP = "N/A";
 // TODO: Remove this - workaround because of bug causing UE to crash when switching resolutions too quickly
 let lastTimeResized = new Date().getTime();
@@ -2660,13 +2660,18 @@ function settingsClicked( /* e */ ) {
      */
     let settings = document.getElementById('settings-panel');
     let stats = document.getElementById('stats-panel');
+    let settingsBtn = document.getElementById('settingsBtn');
 
-    if(stats.classList.contains("panel-wrap-visible"))
-    {
-        emitUIInteraction('OnSettingClose');
+    if(stats.classList.contains("panel-wrap-visible")) {
         stats.classList.toggle("panel-wrap-visible");
+    }
+
+    if (settings.classList.contains("panel-wrap-visible")) {
+        emitUIInteraction('OnSettingClose');
+        settingsBtn.style.display = '';
     } else {
         emitUIInteraction('OnSettingOpen');
+        settingsBtn.style.display = 'none';
     }
 
     settings.classList.toggle("panel-wrap-visible");
@@ -2721,7 +2726,6 @@ function start(isReconnection) {
     } else {
         connect();
     }
-    setupStartupResolution();
 }
 
 function connect() {
@@ -2816,7 +2820,6 @@ function connect() {
 
         ws = undefined;
     };
-    setupStartupResolution();
 }
 
 // Config data received from WebRTC sender via the Cirrus web server
@@ -2954,20 +2957,15 @@ function handleCustomEvents(data) {
         case 'OnFindWidgetClose':
             toggleSearchButtonVisibility(true);
             break;
+        case 'OnFindWidgetOpen':
+            toggleSearchButtonVisibility(false);
+            break;
     }
     if(webRtcPlayerObj && webRtcPlayerObj.video && newScheme != null) {
         inputOptions.controlScheme = newScheme;
         registerMouse(webRtcPlayerObj.video);
         console.log(`Updating control scheme to: ${inputOptions.controlScheme ? "Hovering Mouse" : "Locked Mouse"}`)
     }
-}
-
-function setupStartupResolution() {
-    let descriptor = {
-        "Resolution.Width": 1920,
-        "Resolution.Height": 1080
-    };
-    emitCommand(descriptor);
 }
 
 function load() {

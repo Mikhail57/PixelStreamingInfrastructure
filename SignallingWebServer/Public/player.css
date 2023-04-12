@@ -197,6 +197,24 @@ img#playButton{
 	font-family: 'Montserrat', sans-serif;
 }
 
+.controls-bottom {
+	position: absolute;
+	bottom: 2%;
+	right: 1%;
+	font-family: 'Michroma', sans-serif;
+	pointer-events: all;
+	display: block;
+}
+
+.controls-bottom > * {
+	margin-bottom: 0.5rem;
+	border-radius: 50%;
+	display: block;
+	height: 2rem;
+	line-height: 1.75rem;
+	padding: 0.5rem;
+}
+
 #unrealengine {
 	position: absolute;
 	bottom: 5%;
