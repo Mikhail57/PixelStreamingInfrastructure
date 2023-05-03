@@ -146,7 +146,7 @@ img#playButton{
 	position: absolute;
 	top: 0;
 	transform: translateY(25%);
-  	left: 125%;
+  	right: 125%;
 	z-index: 20;
 }
 
@@ -174,7 +174,7 @@ img#playButton{
 	width: max-content;
 }
 
-#controls {
+.controls {
 	position: absolute;
 	top: 2%;
 	left: 1%;
@@ -183,7 +183,7 @@ img#playButton{
 	display: block;
 }
 
-#controls > * {
+.controls > * {
 	margin-bottom: 0.5rem;
 	border-radius: 50%;
 	display: block;
@@ -192,9 +192,23 @@ img#playButton{
 	padding: 0.5rem;
 }
 
-#controls #additionalinfo {
-	text-align: center;
-	font-family: 'Montserrat', sans-serif;
+.controls-right-center {
+	position: absolute;
+	right: 1%;
+	top: 50%;
+	transform: translateY(-50%);
+	font-family: 'Michroma', sans-serif;
+	pointer-events: all;
+	display: block;
+}
+
+.controls-right-center > * {
+	margin-bottom: 1rem;
+	border-radius: 50%;
+	display: block;
+	height: 2rem;
+	line-height: 1.75rem;
+	padding: 0.5rem;
 }
 
 .controls-bottom {

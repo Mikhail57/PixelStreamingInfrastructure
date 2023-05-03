@@ -33,31 +33,27 @@
 	<div id="playerUI" class="noselect">
 		<div id="player"></div>
 		<div id="overlay">
-			<div id="controls">
-				<button class="tooltip" onclick="fullscreen()" id="fullscreen-btn" style="display: none">
-					<object data="images/Minimize.svg" type="image/svg+xml" id="minimize"></object>
-					<object data="images/Maximize.svg" type="image/svg+xml" id="maximize"></object>
-					<span class="tooltiptext">Fullscreen</span>
-				</button>
-<!--				<button class="tooltip" id="settingsBtn" style="display: none">-->
-<!--					<object data="images/Settings.svg" type="image/svg+xml"></object>-->
-<!--					<span class="tooltiptext">Settings</span>-->
-<!--				</button>-->
-				<button class="tooltip" id="statsBtn" style="display: none">
-					<object data="images/Info.svg" type="image/svg+xml"></object>
-					<span class="tooltiptext">Information</span>
-				</button>
+			<div class="controls">
 				<button class="tooltip" id="searchBtn">
 					<object data="images/Search.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Поиск</span>
 				</button>
-
 			</div>
-			<div class="controls-bottom">
+			<div class="controls-right-center">
+				<button class="tooltip" onclick="fullscreen()" id="fullscreen-btn" style="">
+					<object data="images/Minimize.svg" type="image/svg+xml" id="minimize"></object>
+					<object data="images/Maximize.svg" type="image/svg+xml" id="maximize"></object>
+					<span class="tooltiptext">Fullscreen</span>
+				</button>
+				<button class="tooltip" id="statsBtn" style="display: none">
+					<object data="images/Info.svg" type="image/svg+xml"></object>
+					<span class="tooltiptext">Information</span>
+				</button>
 				<button class="tooltip" id="settingsBtn">
 					<object data="images/Settings.svg" type="image/svg+xml"></object>
 					<span class="tooltiptext">Settings</span>
 				</button>
+
 			</div>
 			<div id="unrealengine" style="display: none">
 				<p></p>
